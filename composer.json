@@ -1,0 +1,34 @@
+{
+    "name": "afropin/afropin-php",
+    "description": "PHP library for the AfroPin gift card API: sell, top up and redeem PINs, quotes, stores and webhooks",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "afropin",
+        "gift cards",
+        "vouchers",
+        "pins",
+        "api"
+    ],
+    "require": {
+        "php": ">=8.0",
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "AfroPin\\": "src/"
+        }
+    },
+    "homepage": "https://afropin.com/developers",
+    "authors": [
+        {
+            "name": "AfroPin Software Limited",
+            "homepage": "https://afropin.com"
+        }
+    ],
+    "support": {
+        "docs": "https://afropin.com/user/docs/introduction",
+        "source": "https://github.com/afropin/afropin-php"
+    }
+}
