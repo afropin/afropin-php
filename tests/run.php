@@ -28,8 +28,14 @@ check('returns the data', $data === ['pin_id' => 'p1']);
 $client->reseller->pins->get('a/b');
 check('encodes path values', str_ends_with($sent['url'], '/reseller/pins/a%2Fb') && $sent['body'] === '');
 $body = '{"type":"pin.sold","data":{"pin_id":"p1"}}';
-check('verifies a webhook', AfroPin\Webhook::verify($body, hash_hmac('sha256', $body, 'whsec'), 'whsec'));
-check('refuses a forged webhook', !AfroPin\Webhook::verify($body, hash_hmac('sha256', $body, 'other'), 'whsec'));
+$ts = (string) time();
+$signed = fn ($secret, $at = null) => ['Webhook-Id' => 'evt_1', 'Webhook-Timestamp' => $at ?? $ts, 'Webhook-Signature' => hash_hmac('sha256', 'evt_1.' . ($at ?? $ts) . '.' . $body, $secret)];
+check('verifies a webhook', AfroPin\Webhook::verify($body, $signed('whsec'), 'whsec'));
+check('reads $_SERVER headers', AfroPin\Webhook::verify($body, ['HTTP_WEBHOOK_ID' => 'evt_1', 'HTTP_WEBHOOK_TIMESTAMP' => $ts, 'HTTP_WEBHOOK_SIGNATURE' => $signed('whsec')['Webhook-Signature']], 'whsec'));
+check('returns the event with its id', AfroPin\Webhook::parse($body, $signed('whsec'), 'whsec')['id'] === 'evt_1');
+check('refuses a forged webhook', !AfroPin\Webhook::verify($body, $signed('other'), 'whsec'));
+check('refuses a replayed webhook', !AfroPin\Webhook::verify($body, $signed('whsec', (string) (time() - 301)), 'whsec'));
+check('refuses a webhook without headers', !AfroPin\Webhook::verify($body, [], 'whsec'));
 
 $envFile = getenv('AFROPIN_TEST_ENV');
 if ($envFile) {

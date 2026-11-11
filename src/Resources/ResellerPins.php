@@ -122,6 +122,18 @@ final class ResellerPins
     }
 
     /**
+     * Choose who delivers a PIN's codes to its customer: us (handle_delivery true) or you.
+     *
+     * POST /api/v1/reseller/pins/delivery
+     *
+     * @return mixed
+     */
+    public function setDelivery(array $params = [], array $options = [])
+    {
+        return $this->client->request('POST', 'reseller/pins/delivery', $params, $options);
+    }
+
+    /**
      * A PIN's cashouts.
      *
      * GET /api/v1/reseller/pins/{pin_id}/cashouts

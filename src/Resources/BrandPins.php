@@ -122,6 +122,18 @@ final class BrandPins
     }
 
     /**
+     * Choose who delivers a PIN's codes to its customer: us (handle_delivery true) or you.
+     *
+     * POST /api/v1/brand/pins/delivery
+     *
+     * @return mixed
+     */
+    public function setDelivery(array $params = [], array $options = [])
+    {
+        return $this->client->request('POST', 'brand/pins/delivery', $params, $options);
+    }
+
+    /**
      * Check a PIN before redeeming it; nothing changes.
      *
      * POST /api/v1/brand/pins/check

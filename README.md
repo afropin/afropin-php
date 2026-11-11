@@ -1,5 +1,7 @@
 # AfroPin for PHP
 
+[![Packagist](https://img.shields.io/packagist/v/afropin/afropin-php)](https://packagist.org/packages/afropin/afropin-php)
+
 The AfroPin gift card API from PHP: sell, top up and redeem PINs, quotes, stores and webhooks.
 
 ```
@@ -79,11 +81,16 @@ the same `external_reference` and a new key: it either goes through once, or fai
 ## Webhooks
 
 ```php
-$event = AfroPin\Webhook::parse(file_get_contents('php://input'), $_SERVER['HTTP_WEBHOOK_SECRET'] ?? '', $webhookSecret);
+$event = AfroPin\Webhook::parse(file_get_contents('php://input'), getallheaders(), $webhookSecret);
 
 if ($event['type'] === 'pin.spent') {
     recordSpend($event['data']);   // your own code
 }
 ```
 
-`parse` throws `invalid_signature` when the signature doesn't match. Use the raw body exactly as received.
+Each webhook carries `webhook-id`, `webhook-timestamp` and `webhook-signature` headers. `parse` throws `invalid_signature` when the
+signature doesn't match the body, a header is missing, or the timestamp is more than 5 minutes from now (check your
+server clock). Use the raw body exactly as received. The event's `id` is the same on every retry, so use it to skip
+an event you've already handled.
+
+`$_SERVER` or a framework's header array (`$request->headers->all()` in Laravel) works in place of `getallheaders()`.
