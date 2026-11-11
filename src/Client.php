@@ -12,7 +12,7 @@ namespace AfroPin;
  */
 final class Client
 {
-    public const VERSION = '2.0.0';
+    public const VERSION = '2.1.0';
     public const BASE_URL = 'https://afropin.com/api/v1';
 
     public Reseller $reseller;

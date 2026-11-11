@@ -14,7 +14,7 @@ final class ResellerBrandStores
     }
 
     /**
-     * Brand stores where your customers can spend the PINs you sell.
+     * Brand stores where a PIN of one product can be spent: pass catalog_id.
      *
      * GET /api/v1/reseller/brand-stores
      *

@@ -11,6 +11,7 @@ final class Brand
     public Resources\BrandStores $stores;
     public Resources\BrandCards $cards;
     public Resources\BrandIssuingCatalog $issuingCatalog;
+    public Resources\BrandBrandStores $brandStores;
     public Resources\BrandPins $pins;
     public Resources\BrandCatalog $catalog;
     public Resources\BrandResellerStores $resellerStores;
@@ -23,6 +24,7 @@ final class Brand
         $this->stores = new Resources\BrandStores($client);
         $this->cards = new Resources\BrandCards($client);
         $this->issuingCatalog = new Resources\BrandIssuingCatalog($client);
+        $this->brandStores = new Resources\BrandBrandStores($client);
         $this->pins = new Resources\BrandPins($client);
         $this->catalog = new Resources\BrandCatalog($client);
         $this->resellerStores = new Resources\BrandResellerStores($client);
